@@ -3,139 +3,167 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="PC Sentinel 처음 사용 안내: 설치, 화면 구성, 점검 결과 읽는 법, 업데이트·정리, AI 사용량, 안전 장치">
 <title>PC Sentinel 사용 안내서</title>
+<!-- 글꼴: Pretendard(한글) · Geist(영문·숫자) · Geist Mono(코드) — 모두 SIL Open Font License, 버전 고정 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-/* 레이아웃: 왼쪽 고정 목차 + 본문 한 단 (휴대폰에서는 목차가 위로) */
+@font-face { font-family: "Geist"; src: url("https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+/* 레이아웃: 짙은 상단 바 → 회청색 작업면 위 왼쪽 고정 탐색 + 흰 카드 본문 (좁은 화면에서는 탐색이 위로) */
 :root {
-  --bg: #f5f7fb;
-  --surface: #ffffff;
-  --ink: #1b2330;
-  --muted: #5d6879;
-  --line: #dde3ec;
-  --accent: #2f6fde;
-  --accent-soft: #e7effd;
-  --ok: #1f7a46; --ok-bg: #e5f5ec;
-  --warn: #9a6200; --warn-bg: #fff4dc;
-  --danger: #c4372f; --danger-bg: #fdeceb;
-  --info: #31608f; --info-bg: #e8f0fa;
-  --neutral-bg: #eef1f5;
-  --font-body: "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
-  --font-mono: Consolas, "D2Coding", "Cascadia Mono", monospace;
-  --radius: 10px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #12161d; --surface: #1a2029; --ink: #e5e9f0; --muted: #98a3b4; --line: #2c3442;
-    --accent: #6c9cf2; --accent-soft: #1f2c44;
-    --ok: #63c58d; --ok-bg: #173226; --warn: #e8b453; --warn-bg: #3a2e14; --danger: #f0776f; --danger-bg: #3a1e1c; --info: #8ab4e6; --info-bg: #1b2a3c; --neutral-bg: #232a35;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #12161d; --surface: #1a2029; --ink: #e5e9f0; --muted: #98a3b4; --line: #2c3442;
-  --accent: #6c9cf2; --accent-soft: #1f2c44;
-  --ok: #63c58d; --ok-bg: #173226; --warn: #e8b453; --warn-bg: #3a2e14; --danger: #f0776f; --danger-bg: #3a1e1c; --info: #8ab4e6; --info-bg: #1b2a3c; --neutral-bg: #232a35;
-  color-scheme: dark;
+  --surface-page: #f4f6f9;
+  --surface-card: #ffffff;
+  --surface-nav: #eaf0f6;
+  --text-primary: #172033;
+  --text-heading: #263b55;
+  --text-muted: #697386;
+  --text-faint: #8294a9;
+  --border-subtle: #e4e8ef;
+  --border-panel: #e0e8ef;
+  --header-bg: #101a2d;
+  --brand: #506cf5;
+  --focus: #527aaa;
+  --ok: #2d8055; --ok-bg: #eff7ee;
+  --steady: #2e7e73; --steady-bg: #edf7f5;
+  --warn: #a97823; --warn-bg: #fbf6e7;
+  --danger: #b75c50; --danger-bg: #fcf0ed;
+  --info: #4c719e; --info-bg: #eef3fa;
+  --neutral-bg: #f5f8fb;
+  --font-body: Geist, "Pretendard Variable", Pretendard, "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "Geist Mono", Consolas, "D2Coding", monospace;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
-html { color-scheme: light; }
-body { margin: 0; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--surface-page); color: var(--text-primary); font: 15px/1.7 var(--font-body); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
 img { max-width: 100%; }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.7; }
-.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
-nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
-nav.toc .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 16px; }
-nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: toc; }
-nav.toc a { display: block; padding: 5px 10px; border-radius: 6px; color: var(--muted); text-decoration: none; }
-nav.toc a:hover, nav.toc a:focus-visible { background: var(--accent-soft); color: var(--accent); outline: none; }
-main { min-width: 0; }
-header.hero { padding-bottom: 28px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
-.eyebrow { font-size: 13px; letter-spacing: .06em; color: var(--accent); font-weight: 600; }
-h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.25; margin: 6px 0 12px; text-wrap: balance; }
-.lead { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 0; }
-.facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.facts span { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--neutral-bg); color: var(--muted); }
-section { padding-top: 40px; }
-h2 { font-size: 24px; line-height: 1.35; margin: 0 0 12px; text-wrap: balance; }
-h3 { font-size: 18px; margin: 28px 0 8px; }
-p, li { max-width: 68ch; }
+a { color: var(--brand); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+
+.topbar { color: #fff; background: radial-gradient(circle at 78% -80%, #506cf561, transparent 42%), var(--header-bg); border-bottom: 1px solid #ffffff14; }
+.topbar-inner { min-height: 76px; max-width: 1280px; margin: 0 auto; padding: 14px max(24px, env(safe-area-inset-right, 0px)) 14px max(24px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 13px; }
+.brand-mark { width: 43px; height: 43px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(145deg, #7186ff, #4059e8); box-shadow: 0 8px 28px #3a53e159; }
+.brand-name { font-size: 18px; font-weight: 700; line-height: 1.1; letter-spacing: -.025em; }
+.brand-sub { color: #9faac0; font-size: 11px; letter-spacing: .04em; margin-top: 5px; }
+.topbar-link { color: #c4ccda; font-size: 12px; text-decoration: none; white-space: nowrap; border: 1px solid #ffffff2b; border-radius: 8px; padding: 7px 12px; }
+.topbar-link:hover { color: #fff; border-color: #ffffff55; }
+
+.wrap { max-width: 1280px; margin: 0 auto; padding-block: 28px 48px; padding-left: max(24px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 26px; align-items: start; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); padding: 8px; border: 1px solid #e1e5ec; border-radius: 13px; background: var(--surface-nav); }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+nav.toc a { display: flex; flex-direction: column; padding: 9px 12px; border-radius: 9px; color: #5f6c80; text-decoration: none; font-size: 13px; font-weight: 650; line-height: 1.35; }
+nav.toc a small { color: #929cad; font: 700 9px/1.2 var(--font-mono); letter-spacing: .1em; margin-bottom: 4px; }
+nav.toc a:hover { background: #ffffffa3; }
+nav.toc a:focus-visible { background: #fff; color: #31446b; }
+
+main { min-width: 0; display: grid; gap: 20px; }
+header.hero { padding: 6px 2px 4px; }
+.eyebrow { color: #627c70; letter-spacing: .1em; font-size: 10px; font-weight: 750; font-family: var(--font-mono); }
+h1 { color: var(--text-heading); font-size: clamp(25px, 3vw, 34px); font-weight: 750; letter-spacing: -.04em; line-height: 1.35; margin: 7px 0 8px; text-wrap: balance; }
+.lead { color: #72849a; font-size: 15px; max-width: 68ch; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 16px; padding: 11px 15px; border: 1px solid var(--border-panel); border-radius: 7px; background: var(--neutral-bg); color: var(--text-faint); font-size: 12px; }
+.facts span::before { content: "·"; margin-right: 8px; color: #b3bfcd; }
+.facts span:first-child::before { content: none; }
+
+main > section { min-width: 0; padding: 25px 28px; border: 1px solid var(--border-panel); border-radius: 13px; background: var(--surface-card); }
+h2 { color: #283f5b; font-size: 19px; font-weight: 720; letter-spacing: -.03em; line-height: 1.4; margin: 0 0 10px; text-wrap: balance; }
+h3 { color: var(--text-heading); font-size: 16px; font-weight: 700; letter-spacing: -.02em; margin: 24px 0 8px; }
+p, li { max-width: 72ch; }
 p { margin: 0 0 12px; }
-code, .mono { font-family: var(--font-mono); font-size: .9em; background: var(--neutral-bg); padding: 1px 6px; border-radius: 4px; overflow-wrap: anywhere; }
-a { color: var(--accent); }
-figure { margin: 18px 0 24px; }
-.shot { position: relative; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: 0 1px 2px rgb(0 0 0 / .05), 0 8px 24px rgb(20 40 80 / .06); }
+code, .mono { font-family: var(--font-mono); font-size: .86em; background: #f2f5f9; border: 1px solid #e6ebf1; padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+
+figure { margin: 18px 0 22px; }
+.shot { position: relative; border: 1px solid #e6e9ef; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 2px 7px #2334510c; }
 .shot img { display: block; width: 100%; height: auto; }
-figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
-.pin { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 14px; display: grid; place-items: center; box-shadow: 0 0 0 3px rgb(255 255 255 / .9), 0 2px 6px rgb(0 0 0 / .25); }
-.legend { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px; }
-.legend li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; }
-.legend b.n { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; display: grid; place-items: center; margin-top: 2px; }
+figcaption { font-size: 12px; color: var(--text-faint); margin-top: 8px; }
+.pin { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; background: var(--brand); color: #fff; font: 700 13px/1 var(--font-mono); display: grid; place-items: center; box-shadow: 0 0 0 3px #ffffffe6, 0 4px 12px #3a53e159; }
+.legend { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 10px; }
+.legend li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; font-size: 14px; }
+.legend b.n { width: 24px; height: 24px; border-radius: 50%; background: var(--brand); color: #fff; font: 700 12px/1 var(--font-mono); display: grid; place-items: center; margin-top: 2px; }
 .steps { counter-reset: step; list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
 .steps li { counter-increment: step; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 12px; }
-.steps li::before { content: counter(step); width: 28px; height: 28px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: grid; place-items: center; }
-.table-wrap { overflow-x: auto; margin: 12px 0 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-table { border-collapse: collapse; width: 100%; font-size: 15px; }
-th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 13px; color: var(--muted); font-weight: 600; background: var(--neutral-bg); }
-tr:last-child td { border-bottom: none; }
-.badge { display: inline-block; font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.steps li::before { content: counter(step, decimal-leading-zero); width: 30px; height: 26px; border-radius: 7px; background: #eef1fe; color: var(--brand); font: 700 11px/1 var(--font-mono); display: grid; place-items: center; margin-top: 1px; }
+
+.table-wrap { overflow-x: auto; margin: 12px 0 18px; border: 1px solid #e6e9ef; border-radius: 10px; background: #fff; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th { height: 40px; padding: 0 14px; border-bottom: 1px solid #e7eaf0; background: #f7f8fa; color: #8490a4; font-size: 11px; font-weight: 650; letter-spacing: .02em; text-align: left; white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid #eef0f4; color: #5f6b80; vertical-align: top; }
+td:first-child { color: #354258; font-weight: 650; }
+tr:last-child td { border-bottom: 0; }
+.badge { display: inline-block; border-radius: 5px; padding: 3px 8px; font-size: 11px; font-weight: 650; white-space: nowrap; }
 .b-ok { background: var(--ok-bg); color: var(--ok); }
 .b-danger { background: var(--danger-bg); color: var(--danger); }
 .b-warn { background: var(--warn-bg); color: var(--warn); }
 .b-info { background: var(--info-bg); color: var(--info); }
-.b-neutral { background: var(--neutral-bg); color: var(--muted); }
-.note { border-radius: var(--radius); padding: 14px 16px; margin: 16px 0; font-size: 15px; }
-.note strong { display: block; margin-bottom: 2px; }
-.note.safe { background: var(--ok-bg); }
-.note.tip { background: var(--info-bg); }
-.note.warn { background: var(--warn-bg); }
-.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.b-neutral { background: #f0f2f5; color: var(--text-muted); }
+
+.note { border-radius: 10px; padding: 14px 17px; margin: 16px 0; font-size: 14px; border: 1px solid; }
+.note strong { display: block; margin-bottom: 3px; font-size: 14px; }
+.note.safe { background: var(--ok-bg); border-color: #cfe5d1; color: #2f4b39; }
+.note.safe strong { color: var(--ok); }
+.note.tip { background: var(--info-bg); border-color: #d6e1ef; color: #34465d; }
+.note.tip strong { color: var(--info); }
+.note.warn { background: var(--warn-bg); border-color: #efe0bb; color: #4f4128; }
+.note.warn strong { color: var(--warn); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 18px; }
 .two > * { min-width: 0; }
 .crop { max-width: 760px; }
-details { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 12px 16px; margin: 10px 0; }
-summary { font-weight: 600; cursor: pointer; }
-details p { margin: 10px 0 2px; color: var(--muted); }
-footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-@media (max-width: 860px) {
-  .wrap { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 24px 60px; }
+details { border: 1px solid var(--border-subtle); border-radius: 10px; background: #fff; padding: 13px 17px; margin: 10px 0; }
+details[open] { background: #fbfcfd; }
+summary { font-weight: 650; color: var(--text-heading); cursor: pointer; }
+details p { margin: 10px 0 2px; color: var(--text-muted); font-size: 14px; }
+footer { padding: 6px 3px 0; color: #9099a9; font-size: 11px; line-height: 1.55; }
+
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 18px; padding-block: 18px 40px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); }
   nav.toc { position: static; }
   nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .pin { width: 22px; height: 22px; margin: -11px 0 0 -11px; font-size: 12px; }
+  main > section { padding: 18px; }
+  .topbar-inner { padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); }
+  .pin { width: 22px; height: 22px; margin: -11px 0 0 -11px; font-size: 11px; }
 }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
-html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+      </span>
+      <div>
+        <div class="brand-name">PC Sentinel</div>
+        <div class="brand-sub">개발 PC 런타임 · 보안 점검</div>
+      </div>
+    </div>
+    <a class="topbar-link" href="https://github.com/LeeYoungJin/pc-sentinel-releases/releases" target="_blank" rel="noopener">설치 파일 받기</a>
+  </div>
+</header>
 <div class="wrap">
   <nav class="toc" aria-label="목차">
-    <div class="brand">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z" stroke="var(--accent)"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="var(--accent)"/></svg>
-      PC Sentinel
-    </div>
     <ol>
-      <li><a href="#about">무엇을 하는 앱인가요</a></li>
-      <li><a href="#install">설치와 업데이트</a></li>
-      <li><a href="#layout">화면 구성</a></li>
-      <li><a href="#status">점검 결과 읽는 법</a></li>
-      <li><a href="#runtime">런타임 업데이트</a></li>
-      <li><a href="#skills">AI 스킬</a></li>
-      <li><a href="#graph">관계도</a></li>
-      <li><a href="#usage">AI 사용량</a></li>
-      <li><a href="#system">PATH · 정리</a></li>
-      <li><a href="#settings">설정</a></li>
-      <li><a href="#safety">안전 장치</a></li>
-      <li><a href="#faq">자주 묻는 질문</a></li>
+      <li><a href="#about"><small>OVERVIEW</small>무엇을 하는 앱인가요</a></li>
+      <li><a href="#install"><small>INSTALL</small>설치와 업데이트</a></li>
+      <li><a href="#layout"><small>LAYOUT</small>화면 구성</a></li>
+      <li><a href="#status"><small>STATUS</small>점검 결과 읽는 법</a></li>
+      <li><a href="#runtime"><small>RUNTIME</small>런타임 업데이트</a></li>
+      <li><a href="#skills"><small>AI SKILLS</small>AI 스킬</a></li>
+      <li><a href="#graph"><small>LINEAGE</small>관계도</a></li>
+      <li><a href="#usage"><small>AI USAGE</small>AI 사용량</a></li>
+      <li><a href="#system"><small>SYSTEM</small>PATH · 정리</a></li>
+      <li><a href="#settings"><small>SETTINGS</small>설정</a></li>
+      <li><a href="#safety"><small>SAFETY</small>안전 장치</a></li>
+      <li><a href="#faq"><small>FAQ</small>자주 묻는 질문</a></li>
     </ol>
   </nav>
-
   <main>
     <header class="hero">
-      <div class="eyebrow">처음 쓰는 분을 위한 안내서</div>
+      <div class="eyebrow">USER GUIDE · 처음 쓰는 분을 위한 안내서</div>
       <h1>PC Sentinel 사용 안내서</h1>
       <p class="lead">개발 PC 에 깔린 Node.js·Python·Java·.NET 의 버전과 보안 패치, AI 도구 스킬, PATH 를 한 화면에서 점검하고 필요한 것만 안전하게 고치는 Windows 앱입니다.</p>
       <div class="facts"><span>Windows 10 · 11</span><span>점검은 조회만</span><span>바꾸기 전 항상 확인</span><span>사용자 정보는 가려서 표시</span></div>
