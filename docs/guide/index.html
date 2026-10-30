@@ -287,6 +287,14 @@ footer { padding: 6px 3px 0; color: #9099a9; font-size: 11px; line-height: 1.55;
         <figcaption>AI 스킬 화면 — '문제 항목만 보기'를 끄면 전체 목록을 봅니다. (예시 화면의 항목 이름은 가렸습니다)</figcaption>
       </figure>
       <p>깨진 항목은 <b>경로 복구</b>로 현재 설치된 Node 위치에 다시 연결할 수 있습니다. 설정 파일은 고치기 전에 백업합니다. 인증 정보 파일과 MCP 환경 변수는 읽지 않습니다.</p>
+      <h3>Claude Code 플러그인 업데이트</h3>
+      <p>같은 화면 아래 <b>Claude Code 플러그인 업데이트</b>에서 설치한 플러그인에 새 버전이 나왔는지 봅니다. GitHub 에 있는 각 마켓플레이스 목록과 설치 버전을 비교합니다(6시간마다 새로 조회).</p>
+      <ol class="steps">
+        <li><div><span class="badge b-warn">새 버전 있음</span> 줄의 <b>업데이트</b>를 누르면 계획 확인 창에 <code>설치 버전 → 새 버전</code>이 나옵니다.</div></li>
+        <li><div><b>실행</b> → Windows 확인 창에서 '실행'을 누르면 Claude Code 공식 명령(<code>claude plugin update</code>)으로 업데이트하고, 끝나면 설치 버전을 다시 확인합니다.</div></li>
+        <li><div>열려 있는 Claude Code 를 <b>다시 시작</b>해야 적용됩니다.</div></li>
+      </ol>
+      <div class="note warn"><strong>업데이트하면 새 코드가 실행됩니다</strong>믿을 수 있는 마켓플레이스의 플러그인만 업데이트하세요. 마켓플레이스가 지정한 명령의 승인이 필요하거나 프로젝트 범위로 설치한 플러그인은 앱이 대신 처리하지 않고, 터미널에서 직접 실행할 명령을 알려 줍니다. 이름이 바뀐 플러그인은 새 이름을 안내합니다.</div>
     </section>
 
     <section id="graph">
